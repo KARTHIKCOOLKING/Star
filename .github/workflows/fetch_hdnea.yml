@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # 🔥 REQUIRED
+  contents: write   # REQUIRED for commit & push
 
 jobs:
   fetch-hdnea-token:
@@ -27,13 +27,17 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Fetch __hdnea__ token
+      - name: Fetch __hdnea__ token (SECURE)
+        env:
+          COOKIE_URL: ${{ secrets.HDNEA_COOKIE_URL }}
         run: |
-          response=$(curl -s https://fftv.in/jpls/cookies.json)
+          echo "::add-mask::$COOKIE_URL"
+
+          response=$(curl -fsSL "$COOKIE_URL")
           token=$(echo "$response" | jq -r '.[0].cookie' | sed 's/^__hdnea__=//')
 
           if [ -z "$token" ] || [ "$token" = "null" ]; then
-            echo "::error ::Token fetch failed"
+            echo "::error ::HDNEA token fetch failed"
             exit 1
           fi
 
