@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # REQUIRED for commit & push
+  contents: write
 
 jobs:
   fetch-hdnea-token:
@@ -29,15 +29,15 @@ jobs:
 
       - name: Fetch __hdnea__ token (SECURE)
         env:
-          COOKIE_URL: ${{ secrets.HDNEA_COOKIE_URL }}
+          COOKIE_JSON_URL: ${{ secrets.HDNEA_JSON_URL }}
         run: |
-          echo "::add-mask::$COOKIE_URL"
+          echo "::add-mask::$COOKIE_JSON_URL"
 
-          response=$(curl -fsSL "$COOKIE_URL")
+          response=$(curl -fsSL "$COOKIE_JSON_URL")
           token=$(echo "$response" | jq -r '.[0].cookie' | sed 's/^__hdnea__=//')
 
           if [ -z "$token" ] || [ "$token" = "null" ]; then
-            echo "::error ::HDNEA token fetch failed"
+            echo "::error ::Token fetch failed"
             exit 1
           fi
 
@@ -46,7 +46,7 @@ jobs:
       - name: Update channels.json
         run: python append_hdnea_token.py
 
-      - name: Commit & Push (SAFE)
+      - name: Commit & Push
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
