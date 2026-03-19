@@ -1,1 +1,1 @@
-__hdnea__=st=1773886077~exp=1773907677~acl=/*~hmac=f6d52fb77975bddd24c99c820021c4bf4c79e63adb96b5f95d7f2ccc6273654e
+__hdnea__=st=1773930661~exp=1773952261~acl=/bpk-tv/ColorsHD_BTS/WDVLive/*~hmac=9a58a0aed9ca8915d2a7125478b85097b8043ee4fbe3add9be6bb86fd858ec32
